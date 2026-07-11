@@ -1,0 +1,18 @@
+# LVGL v9 settings for CYD ESP32-2432S028
+CONFIG_LV_OS_FREERTOS=y
+CONFIG_LV_USE_LOG=y
+CONFIG_LV_LOG_LEVEL=1
+CONFIG_LV_FONT_MONTSERRAT_28=y
+CONFIG_LV_FONT_MONTSERRAT_40=y
+
+# Custom partition table — dual OTA on 4 MB flash
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="4MB"
+
+# OTA — allow plain http:// URLs (use https:// in production)
+CONFIG_ESP_HTTPS_OTA_ALLOW_HTTP=y
+
+# BSEC (Kconfig default is off — this project's own build keeps it on)
+CONFIG_SS3_USE_BSEC=y
