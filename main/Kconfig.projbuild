@@ -1,0 +1,17 @@
+menu "SensorStation3"
+
+    config SS3_USE_BSEC
+        bool "Enable BSEC air-quality processing for BME680"
+        default n
+        help
+            Links the precompiled Bosch BSEC library and enables IAQ/CO2eq/VOC
+            processing when a BME680 sensor is detected. Requires the
+            precompiled libalgobsec.a for the ESP32 Xtensa LX6 target.
+
+            When disabled, the bsec component is excluded from the build
+            entirely (not compiled, not linked). BME680 sensors still report
+            temperature/humidity/pressure/gas resistance and an approximate
+            CO2eq (via bmx280's built-in gas-resistance estimate), but without
+            BSEC's IAQ/static_iaq/accuracy outputs.
+
+endmenu

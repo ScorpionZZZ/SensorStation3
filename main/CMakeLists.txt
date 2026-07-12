@@ -1,0 +1,31 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "nvs_settings.c"
+        "ui.c"
+        "ui_main.c"
+        "ui_pin.c"
+        "ui_settings.c"
+        "ui_wifi.c"
+        "ui_mqtt.c"
+        "ui_ota.c"
+        "ui_domoticz.c"
+        "ui_home_assistant.c"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        board
+        ota_manager
+        display
+        bmx280
+        photores
+        nvs_flash
+        wifi_manager
+        ntp_clock
+        sensor_history
+        fonts
+        tb_mqtt
+        domoticz_mqtt
+        ha_mqtt
+        bsec
+)
