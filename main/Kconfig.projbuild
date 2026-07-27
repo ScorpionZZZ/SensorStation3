@@ -1,0 +1,38 @@
+menu "SensorStation3"
+
+    config SS3_USE_BSEC
+        bool "Enable BSEC air-quality processing for BME680"
+        default n
+        help
+            Links the precompiled Bosch BSEC library and enables IAQ/CO2eq/VOC
+            processing when a BME680 sensor is detected. Requires the
+            precompiled libalgobsec.a for the ESP32 Xtensa LX6 target.
+
+            When disabled, the bsec component is excluded from the build
+            entirely (not compiled, not linked). BME680 sensors still report
+            temperature/humidity/pressure/gas resistance and an approximate
+            CO2eq (via bmx280's built-in gas-resistance estimate), but without
+            BSEC's IAQ/static_iaq/accuracy outputs.
+
+    choice SS3_LCD_PANEL
+        prompt "LCD panel driver"
+        default SS3_LCD_PANEL_AUTO
+        help
+            SensorStation3 supports both ILI9341 and ST7789 SPI panels, which
+            share identical wiring on the CYD board. By default the panel
+            controller is auto-detected at boot by reading the display's ID
+            register (RDDID). Force a specific driver here if auto-detection
+            picks the wrong one for your module.
+
+        config SS3_LCD_PANEL_AUTO
+            bool "Auto-detect (read panel ID at boot)"
+
+        config SS3_LCD_PANEL_ILI9341
+            bool "Force ILI9341"
+
+        config SS3_LCD_PANEL_ST7789
+            bool "Force ST7789"
+
+    endchoice
+
+endmenu
