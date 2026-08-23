@@ -1,0 +1,5 @@
+dependencies:
+  lvgl/lvgl:
+    version: "~9.5.0"
+  espressif/esp_lcd_ili9341:
+    version: ">=2.0.0"
