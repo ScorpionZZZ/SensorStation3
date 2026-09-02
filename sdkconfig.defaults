@@ -1,0 +1,37 @@
+# LVGL v9 settings for CYD ESP32-2432S028
+CONFIG_LV_OS_FREERTOS=y
+CONFIG_LV_USE_LOG=y
+CONFIG_LV_LOG_LEVEL=1
+CONFIG_LV_FONT_MONTSERRAT_10=y
+
+# Custom partition table — dual OTA on 4 MB flash
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="4MB"
+
+# OTA — allow plain http:// URLs (use https:// in production)
+CONFIG_ESP_HTTPS_OTA_ALLOW_HTTP=y
+
+# TLS — dynamic TX/RX buffers instead of pre-allocating the full configured
+# MBEDTLS_SSL_IN/OUT_CONTENT_LEN (16 KB + 4 KB) upfront at mbedtls_ssl_setup()
+# for every connection. Without this, history_fetch's HTTPS request to a
+# self-hosted ThingsBoard instance failed outright with "mbedtls_ssl_setup
+# returned -0x008D" (PSA_ERROR_INSUFFICIENT_MEMORY) during early boot, while
+# 3 MQTT clients were also establishing their own connections concurrently.
+CONFIG_MBEDTLS_DYNAMIC_BUFFER=y
+
+# TLS — the "common" (curated, ~50% smaller, ~99% real-world coverage)
+# certificate bundle instead of the full Mozilla list. Even with the above,
+# certificate-bundle *verification* itself (a separate allocation from the
+# TLS record buffers) still failed with only ~21 KB free heap and a ~19 KB
+# largest contiguous block on real hardware — WiFi + 3 concurrent MQTT
+# clients + LVGL/display + sensors leaves too little headroom for the full
+# bundle's larger working set. Confirmed steady-state, not just at boot
+# (identical failure whether the HTTPS request ran 5 s or 65 s after WiFi
+# connected). The common bundle already covers virtually all real-world
+# CAs (e.g. Let's Encrypt, used by this project's own TLS hosts).
+CONFIG_MBEDTLS_CERTIFICATE_BUNDLE_DEFAULT_CMN=y
+
+# BSEC (Kconfig default is off — this project's own build keeps it on)
+CONFIG_SS3_USE_BSEC=n
